@@ -4,10 +4,10 @@ const mysql = require("mysql");
 
 const app = express();
 
-app.engine("handlebars", exphbs.engine());
-app.set("views engine", "handlebars");
-
 app.use(express.static("public"));
+app.engine("handlebars", exphbs.engine());
+app.set("view engine", "handlebars");
+
 
 app.use(express.urlencoded({
     extended: true
