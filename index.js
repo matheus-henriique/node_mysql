@@ -34,6 +34,24 @@ app.get("/", (req, res) => {
   })
 })
 
+app.post("/edit/save", (req, res) =>{
+  const {id, name, pageqty} = req.body
+
+  const query = `
+  UPTADE books
+  SET title = '${name}', pageqty = '${pageqty}
+  WHERE id = ${id}
+  `
+
+  connection.query(query, (error) =>{
+      if (error){
+          return console.log(error)
+      }
+
+      res.redirect("/")
+  })
+})
+
 app.post("/register/save", (req, res) => {
   const { name, pageqty } = req.body
 
@@ -50,6 +68,23 @@ app.post("/register/save", (req, res) => {
       }
 
       res.redirect("/")
+  })
+})
+
+app.get("/edit/:id", (req, res)=>{
+  const id = req.params.id
+  const query = `
+      SELECT * FROM books
+      WHERE id = ${id}
+  `
+
+  connection.query(query,(error,data) => {
+      if(error){
+          return console.log(error)
+      }
+      const book = data [0]
+
+      res.render('edit', {book})
   })
 })
 
@@ -71,8 +106,6 @@ app.get("/book/:id", (req, res)=> {
       res.render("book", {book})
   })
 })
-
-
 
 app.get("/register", (req, res) =>{
   res.render("register")
