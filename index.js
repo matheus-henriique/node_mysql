@@ -53,6 +53,27 @@ app.post("/register/save", (req, res) => {
   })
 })
 
+app.get("/book/:id", (req, res)=> {
+  const id = req.params.id
+
+  const query = `
+      SELECT * FROM books
+      WHERE id=${id}
+  `
+
+  connection.query(query, (error, data) =>{
+      if(error){
+          return console.log(error)
+      }
+
+      const book = data[0]
+
+      res.render("book", {book})
+  })
+})
+
+
+
 app.get("/register", (req, res) =>{
   res.render("register")
 })
