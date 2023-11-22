@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
 
     res.render("home", {books});
   })
-})
+});
 
 app.post("/edit/save", (req, res) =>{
   const {id, name, pageqty} = req.body
@@ -50,7 +50,27 @@ app.post("/edit/save", (req, res) =>{
 
       res.redirect("/")
   })
-})
+});
+
+app.post("/delete", (req, res) => {
+  const {id} = req.body;
+
+  const query = `
+    DELETE FROM books
+    WHERE id = ${id}
+  `;
+
+  connection.query(query, (error) =>{
+    if (error) {
+        console.log(error)
+        return
+    }
+
+    res.redirect("/")
+  });
+
+
+});
 
 app.post("/register/save", (req, res) => {
   const { name, pageqty } = req.body
@@ -69,7 +89,7 @@ app.post("/register/save", (req, res) => {
 
       res.redirect("/")
   })
-})
+});
 
 app.get("/edit/:id", (req, res)=>{
   const id = req.params.id
@@ -86,7 +106,7 @@ app.get("/edit/:id", (req, res)=>{
 
       res.render('edit', {book})
   })
-})
+});
 
 app.get("/book/:id", (req, res)=> {
   const id = req.params.id
@@ -105,11 +125,11 @@ app.get("/book/:id", (req, res)=> {
 
       res.render("book", {book})
   })
-})
+});
 
 app.get("/register", (req, res) =>{
   res.render("register")
-})
+});
 
 const connection = mysql.createConnection({
   host     : 'localhost',
